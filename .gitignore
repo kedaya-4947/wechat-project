@@ -1,0 +1,34 @@
+# Build outputs
+build/
+bin/
+x64/
+Debug/
+Release/
+*.exe
+*.dll
+*.pdb
+*.ilk
+*.obj
+*.o
+*.tlog
+*.recipe
+*.log
+
+# IDE and user files
+.vs/
+.vscode/
+*.user
+*.suo
+*.VC.db
+
+# Dependencies
+node_modules/
+
+# Local secrets and runtime config
+config.ini
+config.json
+*.local
+
+# System files
+.DS_Store
+Thumbs.db

@@ -1,51 +1,52 @@
-# KedayaChat
+# KedayaChat 即时通信系统
 
-KedayaChat is a C++/Qt instant messaging system with a desktop client and a multi-service backend. The project covers account registration, login, friend management, chat sessions, status routing, verification code delivery, MySQL persistence, Redis caching and gRPC-based service communication.
+KedayaChat 是一个基于 C++/Qt 的桌面即时通信项目，包含 Qt 客户端和多服务后端。项目实现了用户注册、登录、密码重置、好友管理、聊天会话、用户状态路由、邮箱验证码、MySQL 持久化、Redis 缓存以及基于 gRPC 的服务间通信。
 
-## Features
+## 功能特性
 
-- Qt desktop client with login, registration, password reset, contact list and chat UI
-- Gateway service for HTTP entry points
-- Chat services for TCP session management and message dispatch
-- Status service for user and server state routing
-- Node.js verification service for email verification code delivery
-- MySQL schema backup in `sql备份/llfc.sql`
-- Redis support for verification codes and online state
+- Qt 桌面客户端：登录、注册、密码重置、联系人列表、聊天窗口
+- 网关服务：提供 HTTP 接入和请求转发
+- 聊天服务：负责 TCP 会话管理、消息接收与分发
+- 状态服务：维护用户在线状态和聊天服务路由
+- 验证码服务：基于 Node.js 发送邮箱验证码
+- 数据存储：MySQL 保存用户、好友和消息相关数据
+- 缓存能力：Redis 保存验证码和在线状态等临时数据
+- 服务通信：使用 Protobuf 和 gRPC 完成后端服务间调用
 
-## Tech Stack
+## 技术栈
 
-- Client: C++, Qt 5, qmake
-- Backend: C++, Boost.Asio, gRPC, Protobuf, MySQL Connector/C++, Redis
-- Verification service: Node.js, gRPC, ioredis, nodemailer
-- Database: MySQL, Redis
+- 客户端：C++、Qt 5、qmake
+- 后端服务：C++、Boost.Asio、gRPC、Protobuf、MySQL Connector/C++、Redis
+- 验证码服务：Node.js、gRPC、ioredis、nodemailer
+- 数据库：MySQL、Redis
 
-## Project Structure
+## 项目结构
 
 ```text
-client/kedayachat/      Qt desktop client
-server/GateServer/      HTTP gateway service
-server/ChatServer/      chat service instance 1
-server/ChatServer2/     chat service instance 2
-server/StatusServer/    status routing service
-server/VarifyServer/    Node.js verification service
-sql备份/llfc.sql         MySQL schema backup
+client/kedayachat/      Qt 桌面客户端
+server/GateServer/      网关服务
+server/ChatServer/      聊天服务实例 1
+server/ChatServer2/     聊天服务实例 2
+server/StatusServer/    状态服务
+server/VarifyServer/    Node.js 邮箱验证码服务
+sql备份/llfc.sql         MySQL 数据库备份脚本
 ```
 
-## Configuration
+## 配置说明
 
-Runtime configuration files are intentionally ignored by Git because they contain database passwords, Redis passwords and email authorization codes.
+运行配置文件不会提交到 Git，因为其中通常包含数据库密码、Redis 密码和邮箱授权码。
 
-Create local configuration files from the provided examples:
+验证码服务可以从示例配置复制本地配置：
 
 ```bash
 cp server/VarifyServer/config.example.json server/VarifyServer/config.json
 ```
 
-For C++ services, create local `config.ini` files in each service directory and fill in the database, Redis and service address values required by your environment.
+C++ 后端服务需要在各自服务目录下创建本地 `config.ini`，并根据实际环境填写 MySQL、Redis、服务地址和端口等配置。
 
-## Run
+## 运行方式
 
-### Verification Service
+### 启动验证码服务
 
 ```bash
 cd server/VarifyServer
@@ -53,23 +54,39 @@ npm install
 npm run serve
 ```
 
-### C++ Services
+### 构建后端 C++ 服务
 
-Open the corresponding `.sln` files with Visual Studio and build each service:
+使用 Visual Studio 打开对应解决方案并编译：
 
 - `server/GateServer/GateServer.sln`
 - `server/StatusServer/StatusServer.sln`
 - `server/ChatServer/ChatServer.sln`
 - `server/ChatServer2/ChatServer.sln`
 
-Start Redis and MySQL before launching the backend services.
+启动后端服务前，需要先准备好 MySQL 和 Redis 环境。
 
-### Qt Client
+### 构建 Qt 客户端
 
-Open `client/kedayachat/kedayachat.pro` with Qt Creator, configure Qt 5 and build/run the desktop client.
+使用 Qt Creator 打开：
 
-## Notes
+```text
+client/kedayachat/kedayachat.pro
+```
 
-- Generated build directories and local binaries are excluded from version control.
-- Do not commit real `config.ini` or `config.json` files.
-- The SQL file is kept for local database initialization and demonstration.
+配置 Qt 5 环境后即可编译并运行客户端。
+
+## 数据库
+
+项目提供 MySQL 备份脚本：
+
+```text
+sql备份/llfc.sql
+```
+
+可以根据该脚本初始化本地数据库，再在各服务的本地配置文件中填写数据库连接信息。
+
+## 版本管理说明
+
+- `build/`、`bin/`、`x64/`、`.vs/` 等构建产物和 IDE 临时文件已通过 `.gitignore` 排除。
+- 真实的 `config.ini` 和 `config.json` 不应提交到仓库。
+- `config.example.json` 只保留字段结构，方便其他环境快速配置。

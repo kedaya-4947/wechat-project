@@ -77,16 +77,4 @@ client/kedayachat/kedayachat.pro
 
 ## 数据库
 
-项目提供 MySQL 备份脚本：
-
-```text
-sql备份/llfc.sql
-```
-
 可以根据该脚本初始化本地数据库，再在各服务的本地配置文件中填写数据库连接信息。
-
-## 版本管理说明
-
-- `build/`、`bin/`、`x64/`、`.vs/` 等构建产物和 IDE 临时文件已通过 `.gitignore` 排除。
-- 真实的 `config.ini` 和 `config.json` 不应提交到仓库。
-- `config.example.json` 只保留字段结构，方便其他环境快速配置。
